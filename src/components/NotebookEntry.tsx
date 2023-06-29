@@ -4,6 +4,7 @@ import { ChatCompletionRequestMessage } from "openai";
 import { useMemo } from "react";
 
 export default function NotebookEntry({ message }: { message: ChatCompletionRequestMessage }) {
+  //@ts-ignore
   const content = useMemo(() => message.content.replaceAll(/{.*?}/g, "").trim(), [message]);
   return (
     <li
