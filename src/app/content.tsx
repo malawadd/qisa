@@ -102,6 +102,7 @@ export default function Content() {
           setChatLog((log) => log.concat({ role: "user", content: message }, response));
           setGameTokens((gameTokens) => ({
             ...gameTokens,
+            //@ts-ignore
             ...extractTokens(response.content),
           }));
         }
