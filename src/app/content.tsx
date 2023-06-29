@@ -2,10 +2,14 @@
 
 // import Audio from "@/components/Audio";
 import NotebookEntry from "@/components/NotebookEntry";
+// @ts-ignore
 import Scene from "@/components/Scene";
 import { ChatCompletionRequestMessage } from "openai";
 import { FormEventHandler, useCallback, useRef, useState } from "react";
 import { useLocalStorage } from "usehooks-ts";
+import { ConnectButton } from '@rainbow-me/rainbowkit';
+// @ts-ignore
+import { useContractWrite, useAccount, useWaitForTransaction } from 'wagmi'
 
 type Tokens = { clues: number; pass: number; complete: boolean };
 
@@ -54,6 +58,9 @@ export default function Content() {
   });
   const [started, setStarted] = useState(chatLog.length > 0);
   const [working, setWorking] = useState(false);
+  const { address,isConnected } = useAccount()
+
+
 
   const chatLogRef = useRef<HTMLUListElement>(null);
 
@@ -142,13 +149,22 @@ export default function Content() {
             </p>
             <p className="text-center">
 
-              <button
-                className="px-4 py-2 bg-amber-700/75 border-4 border-amber-900 text-amber-950 hover:text-amber-100 rounded tracking-widest transition hover:scale-110 disabled:opacity-0"
-                onClick={onClickBegin}
-                disabled={working || started}
-              >
-                Start Investigating
-              </button>
+            <div className="flex flex-col items-center">
+                {!isConnected && (
+                    <div className="px-4 py-2 mb-4 w-1/2 min-w-[120px] bg-amber-700/75 border-4 border-amber-900 text-amber-950 hover:text-amber-100 rounded tracking-widest transition hover:scale-105 disabled:opacity-0">
+                    <ConnectButton  />
+                    </div>
+                )}
+                {isConnected && (
+                    <button
+                    className="px-4 py-2 bg-amber-700/75 border-4 border-amber-900 text-amber-950 hover:text-amber-100 rounded tracking-widest transition hover:scale-110 disabled:opacity-0"
+                    onClick={onClickBegin}
+                    disabled={working || started}
+                    >
+                    Start Investigating
+                    </button>
+                )}
+                </div>
             </p>
           </div>
         )}
@@ -189,3 +205,7 @@ export default function Content() {
     </>
   );
 }
+
+
+
+
