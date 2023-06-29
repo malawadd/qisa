@@ -1,6 +1,6 @@
 "use client";
 
-import Audio from "@/components/Audio";
+// import Audio from "@/components/Audio";
 import NotebookEntry from "@/components/NotebookEntry";
 import Scene from "@/components/Scene";
 import { ChatCompletionRequestMessage } from "openai";
