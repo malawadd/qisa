@@ -1,4 +1,5 @@
 
+import Scene from "@/components/Scene";
 export default function Content() {
 
     return (
@@ -23,6 +24,30 @@ export default function Content() {
             
           </div>
            </aside>
+           <section className="flex flex-col w-full">
+        <div
+          style={{ backgroundImage: 'url("/express-bg.png")' }}
+          className="landscape relative flex items-center justify-center h-full bg-[100%] bg-repeat-x"
+        >
+          
+          <Scene
+            started={true}
+            working={false}
+            clues={0}
+            passengers={0}
+            complete={false}
+          />
+        </div>
+        <form className="w-full" >
+          <input
+            className="text-xl tracking-widest p-4 w-full transition text-blue-900"
+            placeholder="Write in my notebook..."
+            name="message"
+
+          />
+          <button hidden type="submit" />
+        </form>
+      </section>
         </>
       );
 
