@@ -12,8 +12,11 @@ import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { qisa } from '@/utils/contract'
 // @ts-ignore
 import { useContractWrite, useAccount, useWaitForTransaction } from 'wagmi'
+import { NFTStorage } from 'nft.storage'
 
 type Tokens = { clues: number; pass: number; complete: boolean };
+const API_KEY = process.env.NEXT_PUBLIC_NFT_STORAGE_API_KEY
+
 
 async function sendMessage(content: string, context: ChatCompletionRequestMessage[]) {
   let response;
@@ -71,10 +74,8 @@ export default function Content() {
     // @ts-ignore
     functionName: 'safeMint',
   });
-
-  console.log("what is complete status" , gameTokens.complete)
-
-
+  
+  
 
   const chatLogRef = useRef<HTMLUListElement>(null);
 
@@ -87,12 +88,39 @@ export default function Content() {
       setWorking(false);
     }
   }, [setChatLog]);
-
+//
   const mintNFT = useCallback(async () => {
+    
+    const json = {
+      chatLog: chatLog.map(entry => ({
+        role: entry.role,
+        //@ts-ignore
+        content: entry.content.replace(/\n/g, ' ').replace(/ {2,}/g, ' ')
+      }))
+    };
+    const promot = JSON.stringify(json, null, 2)
+    console.log("chatlog is here" , json)
+    const nft = {
+      name: "Qisa Express",
+      description: "Detective layton adventure on the express",
+      image: new File([`${('/public/express-toot-win.gif')}`], 'express-toot.gif', { type: 'image/gif' }),
+      properties: {
+        prompt: `${(promot)}`
+        },
+      }
+    
+    //@ts-ignore
+    const client = new NFTStorage({ token: API_KEY })
+    //@ts-ignore
+    const metadata = await client.store(nft)
+  
+    console.log('NFT data stored!')
+    console.log('Metadata URI: ', metadata.url)
+
     try{
       if (isConnected) {
            write({
-              args: ['its me'],
+              args: [metadata.url],
               // @ts-ignore
               from: address
             });
