@@ -70,7 +70,7 @@ export default function Content() {
     // @ts-ignore
     abi: qisa.abi,
     // @ts-ignore
-    chainId: 4002 ,
+    chainId: 250 ,
     // @ts-ignore
     functionName: 'safeMint',
   });

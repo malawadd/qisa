@@ -7,12 +7,12 @@ import {
 } from '@rainbow-me/rainbowkit';
 
 import { configureChains, createConfig, WagmiConfig } from 'wagmi';
-import {fantomTestnet } from 'wagmi/chains';
+import {fantom } from 'wagmi/chains';
 import { publicProvider } from 'wagmi/providers/public';
 import {injectedWallet} from '@rainbow-me/rainbowkit/wallets';
 
 const { chains, publicClient, webSocketPublicClient } = configureChains(
-  [fantomTestnet],
+  [fantom],
   [publicProvider()]
 );
 

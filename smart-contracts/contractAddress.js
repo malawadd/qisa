@@ -1,3 +1,3 @@
 
-    export const qisaAddress = "0x342C3Eb307306C22b226A32985E344B603eb5E37";
+    export const qisaAddress = "0x24c23a634dC1dD033Dc2B2063bc689BD35BE610f";
     

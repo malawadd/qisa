@@ -23,5 +23,5 @@ main().catch((error) => {
   process.exitCode = 1;
 });
 
-//npx hardhat run scripts/deploy.js --network fantomTest
-//npx hardhat verify --network fantomTest 0x342C3Eb307306C22b226A32985E344B603eb5E37 
+//npx hardhat run scripts/deploy.js --network fantomMain
+//npx hardhat verify --network fantomMain 0x24c23a634dC1dD033Dc2B2063bc689BD35BE610f 

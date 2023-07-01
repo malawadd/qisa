@@ -1,5 +1,5 @@
 export const qisa = {
-    address: '0x32a48754fACf1F1a8B5A63B64aCD4Bdca883f404',
+    address: '0x24c23a634dC1dD033Dc2B2063bc689BD35BE610f',
     abi: [
       {
         "inputs": [],
