@@ -9,6 +9,8 @@ import { FormEventHandler, useCallback, useRef, useState } from "react";
 import { useLocalStorage } from "usehooks-ts";
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 // @ts-ignore
+import { qisa } from '@/utils/contract'
+// @ts-ignore
 import { useContractWrite, useAccount, useWaitForTransaction } from 'wagmi'
 
 type Tokens = { clues: number; pass: number; complete: boolean };
@@ -59,6 +61,18 @@ export default function Content() {
   const [started, setStarted] = useState(chatLog.length > 0);
   const [working, setWorking] = useState(false);
   const { address,isConnected } = useAccount()
+  const { write,data } = useContractWrite({
+    // @ts-ignore
+    address: qisa.address,
+    // @ts-ignore
+    abi: qisa.abi,
+    // @ts-ignore
+    chainId: 4002 ,
+    // @ts-ignore
+    functionName: 'safeMint',
+  });
+
+  console.log("what is complete status" , gameTokens.complete)
 
 
 
@@ -73,6 +87,22 @@ export default function Content() {
       setWorking(false);
     }
   }, [setChatLog]);
+
+  const mintNFT = useCallback(async () => {
+    try{
+      if (isConnected) {
+           write({
+              args: ['its me'],
+              // @ts-ignore
+              from: address
+            });
+  
+          console.log('done')
+      }
+        } catch(error){
+          console.log(error)
+      }
+  }, []);
 
   const onSubmit = useCallback<FormEventHandler<HTMLFormElement>>(
     async (event) => {
@@ -118,11 +148,23 @@ export default function Content() {
         }, 250);
       }
       setWorking(false);
+
+      // to do : upload to ipfs and trigger contract interaction
+  if (gameTokens.complete) {
+    console.log("game is completed 123")
+  }
+
+      
     },
     [chatLog, setChatLog, setGameTokens, working]
   );
 
   console.log({ chatLog, gameTokens });
+
+  // to do : upload to ipfs and trigger contract interaction
+  // if (gameTokens.complete) {
+   
+  // }
 
   return (
     <>
@@ -164,14 +206,28 @@ export default function Content() {
                     Start Investigating
                     </button>
                 )}
+                
                 </div>
+                
             </p>
           </div>
         )}
         <ul ref={chatLogRef} className="h-full w-full text-lg overflow-auto px-4 tracking-widest">
           {chatLog.map((message, i) => (
             <NotebookEntry key={i} message={message} />
+            
           ))}
+          <div className="flex flex-col items-center">
+                  {isConnected && gameTokens.complete && (
+                    <button
+                    className="px-4 py-2 bg-amber-700/75 border-4 border-amber-900 text-amber-950 hover:text-amber-100 rounded tracking-widest transition hover:scale-110 disabled:opacity-0"
+                    onClick={mintNFT}
+                    
+                    >
+                    mintNFT
+                    </button>
+                )}
+            </div>
         </ul>
       </aside>
       <section className="flex flex-col w-full">
@@ -190,6 +246,8 @@ export default function Content() {
             complete={gameTokens.complete}
           />
         </div>
+
+
         <form className="w-full" onSubmit={onSubmit}>
           <input
             className="text-xl tracking-widest p-4 w-full transition text-blue-900"
